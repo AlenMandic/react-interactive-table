@@ -7,25 +7,11 @@ function FilterableProductTable() {
   // handle filtering based on input text
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
-    document.querySelectorAll('.text-name').forEach(child => {
-      child.textContent.toLowerCase().includes(e.target.value.toLowerCase()) ? child.parentElement.style.display = 'flex' : child.parentElement.style.display = 'none'
-    })
   }
+
  //handle filtering based on checkbox
  const handleCheckBox = () => {
-  let our_checkbox = document.querySelector('#checkbox')
-  let unStocked = document.querySelectorAll('.false');
-
-  function hideUnstocked() {
-    unStocked.forEach(item => item.childNodes[0].style.display='none');
-    unStocked.forEach(item => item.childNodes[1].style.display='none');
-  }
-  function showUnstocked() {
-    unStocked.forEach(item => item.childNodes[0].style.display='block');
-    unStocked.forEach(item => item.childNodes[1].style.display='block');
-  }
-
-  our_checkbox.checked ? hideUnstocked() : showUnstocked();
+ // coming soon :)
  }
 
   return (
@@ -44,24 +30,10 @@ function FilterableProductTable() {
       <ProductTable />
       <div className="product-wrapper">
         <ProductCategoryRow type={'Fruits'} />
-        <ul className="product-list">
-          {ourProductData.map((fruit) =>
-            fruit.category === 'Fruits' ? <li className={fruit.stocked.toString()} key={`${fruit.name}-${fruit.category}`}>
-              <p className="text-name">{fruit.name}</p>
-              <p className="text">{fruit.price}</p>
-            </li> : ''
-          )}
-        </ul>
+        <ProductList inputValue = {inputValue} type = {'Fruits'} />
 
         <ProductCategoryRow type={'Vegetables'} />
-        <ul className="product-list">
-          {ourProductData.map((fruit) =>
-            fruit.category === 'Vegetables' ? <li className={fruit.stocked.toString()} key={`${fruit.name}-${fruit.category}`}>
-              <p className="text-name">{fruit.name}</p>
-              <p className="text">{fruit.price}</p>
-            </li> : ''
-          )}
-        </ul>
+        <ProductList inputValue = {inputValue} type = {'Vegetables'} />
       </div>
     </div>
   )
@@ -84,6 +56,34 @@ function ProductCategoryRow(props) {
       <h2>{props.type}</h2>
     </div>
   )
+}
+
+function ProductList(props) {
+
+ const { inputValue } = props;
+ const { type } = props;
+
+ const itemList = (
+  <ul className="product-list">
+    {ourProductData.map((item, index) => {
+
+      return (item.category === type) && (inputValue === '' || item.name.toLowerCase().includes(inputValue)) ? (
+        <li className={item.stocked.toString()} key={`${item.name}-${item.category}-${index}`}>
+          <p className="text-name">{item.name}</p>
+          <p className="text">{item.price}</p>
+        </li>
+      ) : '';
+    })}
+  </ul>
+);
+
+ return (
+<div className="product-table">
+ <div>
+ {itemList}
+ </div>
+</div>
+ )
 }
 
 let ourProductData = [
