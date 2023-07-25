@@ -5,39 +5,46 @@ function FilterableProductTable() {
   const [inputValue, setInputValue] = useState("");
   const [checkBox, setCheckBox] = useState(false);
 
-  // handle filtering based on input text
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   }
-
- //handle filtering based on checkbox
- const handleCheckBox = () => {
-  setCheckBox(!checkBox)  // by default checkbox is false, so unchecked. Here we just toggle through checked and unchecked.
-}
+  const handleCheckBox = () => {
+    setCheckBox(!checkBox)  // by default checkbox is false, so unchecked. Here we just toggle through checked and unchecked.
+  }
 
   return (
     <div className="main-product-wrapper">
-
-      <div className="searchbar">
-        <h1>Our available groceries</h1>
-        <input type="text" id="text" placeholder="Search..." value={inputValue} onChange={handleInputChange}
-        ></input>
-        <div className="stock">
-          <input type="checkbox" id="checkbox" checked={checkBox} onChange={handleCheckBox}></input>
-          <p className="text" id="check-text">Only show products in stock</p>
-        </div>
-      </div>
-
+      <SearchBox inputValue={inputValue} checkBox={checkBox} handleCheckBox={handleCheckBox} handleInputChange={handleInputChange} />
       <ProductTable />
-      <div className="product-wrapper">
-        <ProductCategoryRow type={'Fruits'} />
-        <ProductList inputValue = {inputValue} type = {'Fruits'} checkBox = {checkBox} />
+       <ProductCategoryRow type={'Fruits'} />
+       <ProductList inputValue={inputValue} type={'Fruits'} checkBox={checkBox} />
 
-        <ProductCategoryRow type={'Vegetables'} />
-        <ProductList inputValue = {inputValue} type = {'Vegetables'} checkBox = {checkBox} />
+       <ProductCategoryRow type={'Vegetables'} />
+       <ProductList inputValue={inputValue} type={'Vegetables'} checkBox={checkBox} />
+    </div>
+  )
+}
+
+function SearchBox(props) {
+
+  const { inputValue } = props
+  const { checkBox } = props
+  const { handleCheckBox } = props
+  const { handleInputChange } = props
+
+  return (
+    <div className="searchbar">
+      <h1>Our available groceries</h1>
+      <input type="text" id="text" placeholder="Search..." value={inputValue} onChange={handleInputChange}
+      ></input>
+
+      <div className="stock">
+        <input type="checkbox" id="checkbox" checked={checkBox} onChange={handleCheckBox}></input>
+        <p className="text" id="check-text">Only show products in stock</p>
       </div>
     </div>
   )
+
 }
 
 function ProductTable() {
@@ -61,45 +68,45 @@ function ProductCategoryRow(props) {
 
 function ProductList(props) {
 
- const { inputValue } = props;
- const { type } = props;
- const { checkBox } = props
+  const { inputValue } = props;
+  const { type } = props;
+  const { checkBox } = props
 
- const itemList = 
- !checkBox ? 
- (
-    <ul className="product-list">
-    {ourProductData.map((item, index) => {
+  const itemList =
+    !checkBox ?
+      (
+        <ul className="product-list">
+          {ourProductData.map((item, index) => {
 
-      return (item.category === type) && (inputValue === '' || item.name.toLowerCase().includes(inputValue)) ? (
-        <li className={item.stocked.toString()} key={`${item.name}-${item.category}-${index}`}>
-          <p className="text-name">{item.name}</p>
-          <p className="text">{item.price}</p>
-        </li>
-      ) : '';
-    })}
-  </ul>
-) : (
-  <ul className="product-list">
-  {ourProductData.map((item, index) => {
+            return (item.category === type) && (inputValue === '' || item.name.toLowerCase().includes(inputValue)) ? (
+              <li className={item.stocked.toString()} key={`${item.name}-${item.category}-${index}`}>
+                <p className="text-name">{item.name}</p>
+                <p className="text">{item.price}</p>
+              </li>
+            ) : '';
+          })}
+        </ul>
+      ) : (
+        <ul className="product-list">
+          {ourProductData.map((item, index) => {
 
-    return (item.category === type) && (inputValue === '' || item.name.toLowerCase().includes(inputValue)) && (item.stocked === true) ? (
-      <li className={item.stocked.toString()} key={`${item.name}-${item.category}-${index}`}>
-        <p className="text-name">{item.name}</p>
-        <p className="text">{item.price}</p>
-      </li>
-    ) : '';
-  })}
-</ul>
-)
+            return (item.category === type) && (inputValue === '' || item.name.toLowerCase().includes(inputValue)) && (item.stocked === true) ? (
+              <li className={item.stocked.toString()} key={`${item.name}-${item.category}-${index}`}>
+                <p className="text-name">{item.name}</p>
+                <p className="text">{item.price}</p>
+              </li>
+            ) : '';
+          })}
+        </ul>
+      )
 
- return (
-<div className="product-table">
- <div>
- {itemList}
- </div>
-</div>
- )
+  return (
+    <div className="product-table">
+      <div>
+        {itemList}
+      </div>
+    </div>
+  )
 }
 
 let ourProductData = [
@@ -118,4 +125,5 @@ const App = () => {
     </div>
   )
 }
+
 export default App
