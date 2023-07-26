@@ -68,17 +68,16 @@ function ProductCategoryRow(props) {
 
 function ProductList(props) {
 
-  const { inputValue } = props;
-  const { type } = props;
+  const { inputValue } = props
+  const { type } = props
   const { checkBox } = props
 
-  const itemList =
-    !checkBox ?
+  const itemList = !checkBox ?
       (
         <ul className="product-list">
           {ourProductData.map((item, index) => {
 
-            return (item.category === type) && (inputValue === '' || item.name.toLowerCase().includes(inputValue)) ? (
+            return (item.category === type) && (inputValue === '' || item.name.toLowerCase().includes(inputValue.toLowerCase())) ? (
               <li className={item.stocked.toString()} key={`${item.name}-${item.category}-${index}`}>
                 <p className="text-name">{item.name}</p>
                 <p className="text">{item.price}</p>
@@ -90,7 +89,7 @@ function ProductList(props) {
         <ul className="product-list">
           {ourProductData.map((item, index) => {
 
-            return (item.category === type) && (inputValue === '' || item.name.toLowerCase().includes(inputValue)) && (item.stocked === true) ? (
+            return (item.category === type) && (inputValue === '' || item.name.toLowerCase().includes(inputValue.toLowerCase())) && (item.stocked === true) ? (
               <li className={item.stocked.toString()} key={`${item.name}-${item.category}-${index}`}>
                 <p className="text-name">{item.name}</p>
                 <p className="text">{item.price}</p>
